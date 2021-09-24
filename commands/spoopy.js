@@ -2,9 +2,9 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('admin_ping')
-		.setDescription('Replies with Pong... secretly!'),
+		.setName('spoopy')
+		.setDescription(`Replies with a spoopy link`),
 	async execute(interaction) {
-		await interaction.reply({ content: 'Pong!', ephemeral: true });
+		await interaction.reply({ content: '[Spoopy Link](https://asoftmurmur.com/)' });
 	},
 };
