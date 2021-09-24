@@ -1,0 +1,10 @@
+{
+	"token": "ODkwNzQ4NzAyNjg2MzIyNzA4.YU0UYA.Bf4D1AEMzxv6LBp5XAYTmFE_tj4",
+	"prefix": ".",
+	"owner": "471846717919199236",
+	"database": "private",
+	"environment": "release",
+	"invite": "https://discord.com/api/oauth2/authorize?client_id=890748702686322708&permissions=8&scope=bot%20applications.commands",
+	"serverInvite": "https://discord.gg/VBSQtuG",
+	"version": "1.0.0"
+}

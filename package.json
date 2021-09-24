@@ -1,0 +1,17 @@
+{
+  "name": "lillium",
+  "version": "1.0.0",
+  "description": "A discord bot for managing groups, tags, currency, and forum channels",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AceOfSpades",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  }
+}
