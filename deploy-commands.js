@@ -11,15 +11,30 @@ for (const file of commandFiles) {
 	commands.push(command.data.toJSON());
 }
 
+const guildCommands = [];
+const guildCommandFiles = fs.readdirSync('./guildCommands').filter(file => file.endsWith('.js'));
+
+for (const file of guildCommandFiles) {
+	const guildCommand = require(`./guildCommands/${file}`);
+	guildCommands.push(guildCommand.data.toJSON());
+}
+
 const rest = new REST({ version: '9' }).setToken(token);
 
 (async () => {
 	try {
 		console.log('Started refreshing application (/) commands.');
 
+		console.log('Started refreshing global commands.');
 		await rest.put(
 			Routes.applicationGuildCommands(clientId, guildId),
-			{ body: commands },
+			{ body: guildCommands },
+		);
+
+		console.log('Started refreshing guild commands.');
+		await rest.put(
+			Routes.applicationCommands(clientId),
+			{ body: guildCommands },
 		);
 
 		console.log('Successfully reloaded application (/) commands.');
