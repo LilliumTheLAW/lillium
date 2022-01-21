@@ -4,8 +4,8 @@ const wait = require('util').promisify(setTimeout);
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ping')
-		.setDescription(`Replies with 'Pong!'`)
-		.addStringOption(option =>
+		.setDescription(`Replies with 'Pong!'`),
+		/*.addStringOption(option =>
 			option.setName('type')
 						.setDescription('The type of ping to use.')
 						.setRequired(false)
@@ -14,9 +14,9 @@ module.exports = {
 						.addChoice('Private', 'ephemeral_ping')
 						.addChoice('Followed Up', 'followup_ping')
 						.addChoice('Normal', 'ping')
-					),
+					),*/
 	async execute(interaction) {
-		const type = interaction.options.getString('type');
+		/*const type = interaction.options.getString('type');
 		switch(type){
 			case("defer_ping"):
 				await interaction.deferReply();
@@ -37,9 +37,9 @@ module.exports = {
 				await interaction.followUp({ content: 'Pong again!'});
 				break;
 			case("ping"):
-			default:
+			default:*/
 				await interaction.reply({ content: 'Pong!' });
-				break;
-		}
+				/*break;
+		}*/
 	},
 };

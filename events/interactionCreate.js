@@ -7,9 +7,10 @@ module.exports = {
 		const command = client.commands.get(interaction.commandName);
 		if (!command) return;
 
-		console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction: ${interaction.commandName}`);
 
 		try {
+			console.log(`${interaction.user.tag} in ${interaction.channel ? `#${interaction.channel.name}` : 'DMs'} triggered an interaction: ${interaction.commandName}`);
+			//console.log(interaction);
 			await command.execute(interaction);
 		} catch (error) {
 			console.error(error);

@@ -16,7 +16,7 @@ module.exports = {
 			let num = (interaction.options.getInteger('num') != null ? interaction.options.getInteger('num') : 1);
 			do {
 				const letter = Math.floor(Math.random() * 26) + 1;
-				letters = `${letters}[**${String.fromCharCode(letter + 65)}**] `;
+				letters = `${letters} **__${String.fromCharCode(letter + 65)}__**`;
 				count++;
 			} while(count < num);
 			await interaction.editReply({ content: `Your letter${(num == 1 ? ' is' : 's are')} ${letters}!` });

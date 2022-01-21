@@ -2,6 +2,7 @@ config/
 config.json
 .env
 .gitignore
+archive/
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,git,windows,java,intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,git,windows,java,intellij
