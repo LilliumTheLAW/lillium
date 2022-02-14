@@ -3,9 +3,21 @@ const { MessageActionRow, MessageButton } = require('discord.js');
 const wait = require('util').promisify(setTimeout);
 const { map } = require('../tanki/map.json')
 
+// const { initializeApp } = require('firebase-admin/app');
+var admin = require("firebase-admin");
+
+var serviceAccount = require("../config/lillium-539a5-firebase-adminsdk-53lnz-89d62a60d3.json");
+
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+	databaseURL: "https://lillium-539a5-default-rtdb.firebaseio.com"
+});
+
+var db = admin.database();
+
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('tanki')
+		.setName('gridz')
 		.setDescription('Control a little tank'),
 	async execute(interaction) {
 		const topRow = new MessageActionRow()
@@ -92,11 +104,25 @@ module.exports = {
 
 
 
+		const header = "**__Controls:__**\n> \\🔼\\▶️\\◀️\\🔽 = Move,\n> \\🎁 = Gift, \\⛑️ = Heal,\n> \\🔫 = Shoot, \\🔭 = Upgrade Range, \\🚫 = End\n**__Key__**:\n> 🔳 = Out of Bounds, ⬜ = Empty Space\n> 🟥 = Enemy Tank, 🟨 = Obstacle, 🟩 = You!\n"
+		let statusMessage = "\n";
 
-		await interaction.reply({ content: `**__Controls:__**\n> \\🔼\\▶️\\◀️\\🔽 = Move,\n> \\🎁 = Gift, \\⛑️ = Heal,\n> \\🔫 = Shoot, \\🔭 = Upgrade Range, \\🚫 = End\n**__Key__**:\n> 🔳 = Out of Bounds, ⬜ = Empty Space\n> 🟥 = Enemy Tank, 🟨 = Obstacle, 🟩 = You!\n\n>>> ${getMap()}`, components: [topRow, middleRow, bottomRow] });
+		await interaction.reply({ content: `${header}${statusMessage}>>> ${getMap()}`, components: [topRow, middleRow, bottomRow] });
 
+		var ref = db.ref("gridz/map");
+		var snap = await ref.once("value", function(snapshot) {
+			return snapshot;
+		});
 
+		let onlineMap = snap.val()
 
+		//console.log(onlineMap);
+
+		for(let i = 0; i < onlineMap.length; i++){
+			for(let j = 0; j < onlineMap[i].length; j++){
+				//console.log(onlineMap[i][j]);
+			}
+		}
 
 		const message = await interaction.fetchReply();
 		const collector = message.createMessageComponentCollector({ componentType: 'BUTTON', time: 30000, max: 10 });
@@ -112,33 +138,40 @@ module.exports = {
 					let y = getPlayerY();
 					if(x+1 <= map.length - 1){
 						moveRight();
+						statusMessage = `\n${i.user.username} moved **__right__**${lastID === i.customId ? " again!" : "!"}\n`;
+					}else{
+						statusMessage = `\n${i.user.username}, you can't go any further right.\n`;
 					}
-				}
-
-				if(i.customId === 'move_left'){
+				}else if(i.customId === 'move_left'){
 					let x = getPlayerX();
 					let y = getPlayerY();
 					if(x-1 >= 0){
 						moveLeft();
+						statusMessage = `\n${i.user.username} moved **__left__**${lastID === i.customId ? " again!" : "!"}\n`;
+					}else{
+						statusMessage = `\n${i.user.username}, you can't go any further left.\n`;
 					}
-				}
-
-				if(i.customId === 'move_down'){
+				}else if(i.customId === 'move_down'){
 					let x = getPlayerX();
 					let y = getPlayerY();
 					if(y+1 <= map.length - 1){
 						moveDown();
+						statusMessage = `\n${i.user.username} moved **__down__**${lastID === i.customId ? " again!" : "!"}\n`;
+					}else{
+						statusMessage = `\n${i.user.username}, you can't go any further down.\n`;
 					}
-				}
-
-				if(i.customId === 'move_up'){
+				}else if(i.customId === 'move_up'){
 					let x = getPlayerX();
 					let y = getPlayerY();
 					if(y-1 >= 0){
 						moveUp();
+						statusMessage = `\n${i.user.username} moved **__up__**${lastID === i.customId ? " again!" : "!"}\n`;
+					}else{
+						statusMessage = `\n${i.user.username}, you can't go any further up.\n`;
 					}
 				}
-				await i.editReply({ content: `**__Controls:__**\n> \\🔼\\▶️\\◀️\\🔽 = Move,\n> \\🎁 = Gift, \\⛑️ = Heal,\n> \\🔫 = Shoot, \\🔭 = Upgrade Range, \\🚫 = End\n**__Key__**:\n> 🔳 = Out of Bounds, ⬜ = Empty Space\n> 🟥 = Enemy Tank, 🟨 = Obstacle, 🟩 = You!\n\n${i.user.username} pressed **__${i.customId}__**${lastID === i.customId ? " again!" : "!"}\n\n>>> ${getMap()}`, components: actionRows });
+
+				await i.editReply({ content: `${header}${statusMessage}\n>>> ${getMap()}`, components: actionRows });
 				lastID = i.customId;
 
 				if(i.customId === 'stop'){
@@ -166,17 +199,25 @@ function getMap(){
 	let x = getPlayerX();
 	let y = getPlayerY();
 
-	let output = '';
-	for(let i = y - 3; i < y + 4; i++) {
-		for(let j = x - 3; j < x + 4; j++) {
-			// console.log(`${i}, ${j}`)
+	let count = 0;
+	let output = '◼️';
+	let coords = ["🇦", "🇧", "🇨", "🇩", "🇪", "🇫", "🇬", "🇭", "🇮"];
+
+	for(let i = 0; i < 9; i++){
+		output += coords[i] + "​"; //The charater in quotes is a zero-width space, REQUIRED for the emojis to render properly
+	}
+
+	for(let i = y - 4; i < y + 5; i++) {
+		output += `\n${coords[count]}`;
+		count++;
+		for(let j = x - 4; j < x + 5; j++) {
+			//console.log(`${i}, ${j}`)
 			if(i < 0 || j < 0 || i > map.length - 1 || j > map.length - 1){
 				output += '🔳';
 			}else{
 				output += map[i][j];
 			}
 		}
-		output += '\n';
 	}
 	return output;
 }

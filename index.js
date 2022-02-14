@@ -3,7 +3,7 @@ const fs = require('fs');
 
 // Require the necessary discord.js classes
 const { Client, Collection, Intents } = require('discord.js');
-const { token } = require('./config.json');
+const { token } = require('./config/config.json');
 
 
 
