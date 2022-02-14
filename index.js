@@ -4,7 +4,15 @@ const fs = require('fs');
 // Require the necessary discord.js classes
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config/config.json');
+var admin = require("firebase-admin");
 
+
+var serviceAccount = require("./config/lillium-539a5-firebase-adminsdk-53lnz-89d62a60d3.json");
+
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+	databaseURL: "https://lillium-539a5-default-rtdb.firebaseio.com"
+});
 
 
 // Create a new client instance
