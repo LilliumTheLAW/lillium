@@ -1,6 +1,12 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageButton } = require('discord.js');
 
+/*
+ *	Much of the code in this command was authored by u/dimden on Reddit,
+ *	Please see this thread for the original!
+ *	https://www.reddit.com/r/discordapp/comments/st1qaz/ive_made_working_casio_calculator/
+ */
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('calc')
