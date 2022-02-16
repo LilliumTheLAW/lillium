@@ -80,7 +80,7 @@ module.exports = {
 								}
 								offCount++;
 						} else {
-							if(offCount < 5){
+							if(offCount < 3){
 								m = 0; acc = 0; d = 0; op = ""; toUpdate = false; dot = false;
 								text = " ";
 								off = true;

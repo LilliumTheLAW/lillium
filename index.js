@@ -20,27 +20,20 @@ const client = new Client({ allowedMentions: { parse: ['users', 'roles'] }, inte
 
 // Create a collection of commands
 client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const guildCommandFiles = fs.readdirSync('./guildCommands').filter(file => file.endsWith('.js'));
+const commandDirectories = fs.readdirSync('./commands'); // .filter(directory => directory);
+for(const directory of commandDirectories){
+	const commandFiles = fs.readdirSync(`./commands/${directory}`).filter(file => file.endsWith('.js'));
 
-
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	// Set a new item in the Collection
-	// With the key as the command name and the value as the exported module
-	client.commands.set(command.data.name, command);
-}
-
-for (const file of guildCommandFiles) {
-	const command = require(`./guildCommands/${file}`);
-	// Set a new item in the Collection
-	// With the key as the command name and the value as the exported module
-	client.commands.set(command.data.name, command);
+	for (const file of commandFiles) {
+		const command = require(`./commands/${directory}/${file}`);
+		// Set a new item in the Collection
+		// With the key as the command name and the value as the exported module
+		client.commands.set(command.data.name, command);
+	}
 }
 
 // Create a collection of events
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
 	if (event.once) {
