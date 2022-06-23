@@ -1,0 +1,110 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageActionRow, MessageButton } = require('discord.js');
+const wait = require('util').promisify(setTimeout);
+// const { map } = require('../tanki/map.json')
+
+// const { initializeApp } = require('firebase-admin/app');
+var admin = require("firebase-admin");
+
+module.exports = {
+	data: new SlashCommandBuilder()
+		.setName('deathnote')
+		.setDescription('Plays a game of Deathnote'),
+	async execute(interaction) {
+		const topRow = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId('newGame')
+					.setLabel('New Game!')
+					.setStyle('SUCCESS')
+					//.setEmoji('')
+					.setDisabled(false),
+				new MessageButton()
+					.setCustomId('resumeGame')
+					.setLabel('Resume')
+					.setStyle('PRIMARY')
+					//.setEmoji('')
+					.setDisabled(false),
+				new MessageButton()
+					.setCustomId('exit')
+					.setLabel('Exit')
+					.setStyle('DANGER')
+					//.setEmoji('')
+					.setDisabled(false),
+				new MessageButton()
+					.setCustomId('help')
+					.setLabel('Help')
+					.setStyle('PRIMARY')
+					//.setEmoji('')
+					.setDisabled(false),
+
+		);
+
+		var db = admin.database();
+
+		const header = "This command is a work in progress!\n"
+		let statusMessage = "\n";
+
+		await interaction.reply({ content: `${header}${statusMessage}>>> ${await getMap()}`, components: [topRow] });
+
+
+		const message = await interaction.fetchReply();
+		const collector = message.createMessageComponentCollector({ componentType: 'BUTTON', time: 30000, max: 10 });
+
+		let lastID = '';
+		collector.on('collect', async i => {
+			if (i.user.id === interaction.user.id) {
+				await i.deferUpdate();
+				let actionRows = i.message.components;
+
+
+				/* Get Data. This example gets a map
+
+
+				var ref = db.ref("gridz/map");
+				var snap = await ref.once("value", function(snapshot) {
+					//console.log('contacting firebase...')
+					return snapshot;
+				});
+
+				let map = snap.val(); */
+
+
+				if(i.customId === 'newGame'){
+
+					statusMessage = `**This command isn't quite ready. Perhaps try again later?**`;
+
+				}else if(i.customId === 'resumeGame'){
+
+					statusMessage = `**This command isn't quite ready. Perhaps try again later?**`;
+
+				}else if(i.customId === 'exit'){
+
+					statusMessage = `**This command isn't quite ready. Perhaps try again later?**`;
+
+				}else if(i.customId === 'help'){
+
+					statusMessage = `**Thanks for playing!**`;
+
+				}
+
+				await i.editReply({ content: `${header}${statusMessage}>>> ${await getMap()}`, components: [topRow] });
+				lastID = i.customId;
+
+				if(i.customId === 'exit'){
+					collector.stop('User selected exit');
+				}
+
+			} else {
+				i.reply({ content: `These buttons aren't for you!`, ephemeral: true });
+			}
+		});
+
+		collector.on('end', async collected => {
+			await wait(1000);
+			console.log(`Collected ${collected.size} interactions.`);
+			await interaction.editReply({ content: `> ${interaction.user.username} started a game of **__Death Note__**!`, components: [] });
+		});
+	},
+};
+
