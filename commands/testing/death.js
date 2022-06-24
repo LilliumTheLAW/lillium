@@ -42,10 +42,10 @@ module.exports = {
 
 		var db = admin.database();
 
-		const header = "This command is a work in progress!\n"
-		let statusMessage = "\n";
+		const header = "This command is a work in progress!"
+		let statusMessage = "";
 
-		await interaction.reply({ content: `${header}${statusMessage}>>> ${await getMap()}`, components: [topRow] });
+		await refreshGame(header, statusMessage, `Content coming soon!`, [topRow] );
 
 
 		const message = await interaction.fetchReply();
@@ -88,7 +88,7 @@ module.exports = {
 
 				}
 
-				await i.editReply({ content: `${header}${statusMessage}>>> ${await getMap()}`, components: [topRow] });
+				await refreshGame(header, statusMessage, "Content Coming soon!", [topRow]);
 				lastID = i.customId;
 
 				if(i.customId === 'exit'){
@@ -103,8 +103,20 @@ module.exports = {
 		collector.on('end', async collected => {
 			await wait(1000);
 			console.log(`Collected ${collected.size} interactions.`);
-			await interaction.editReply({ content: `> ${interaction.user.username} started a game of **__Death Note__**!`, components: [] });
+			await refreshGame("", "", `${interaction.user.username} started a game of **__Death Note__**!`, []);
 		});
 	},
 };
+
+
+async function refreshGame(header, status, content, components, edit = true) {
+
+	let messageContent = { content: `${header}\n${status}\n>>> ${content}`, components: components };
+
+	if(edit){
+		await interaction.editReply(messageContent);
+	}else{
+		await interaction.reply(messageContent);
+	}
+}
 
