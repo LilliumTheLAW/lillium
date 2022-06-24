@@ -11,7 +11,7 @@ module.exports = {
 		.setName('deathnote')
 		.setDescription('Plays a game of Deathnote'),
 	async execute(interaction) {
-		const topRow = new MessageActionRow()
+		const mainMenu = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
 					.setCustomId('newGame')
@@ -37,7 +37,6 @@ module.exports = {
 					.setStyle('PRIMARY')
 					//.setEmoji('')
 					.setDisabled(false),
-
 		);
 
 		var db = admin.database();
@@ -45,7 +44,7 @@ module.exports = {
 		const header = "This command is a work in progress!"
 		let statusMessage = "";
 
-		await refreshGame(header, statusMessage, `Content coming soon!`, [topRow] );
+		await refreshGame(header, statusMessage, `Content coming soon!`, [mainMenu], false );
 
 
 		const message = await interaction.fetchReply();
@@ -71,7 +70,7 @@ module.exports = {
 
 				}
 
-				await refreshGame(header, statusMessage, "Content Coming soon!", [topRow]);
+				await refreshGame(header, statusMessage, "Content Coming soon!", [mainMenu]);
 				lastID = i.customId;
 
 				if(i.customId === 'exit'){
@@ -86,7 +85,7 @@ module.exports = {
 		collector.on('end', async collected => {
 			await wait(1000);
 			console.log(`Collected ${collected.size} interactions.`);
-			await refreshGame("", "", `${interaction.user.username} started a game of **__Death Note__**!`, []);
+			await refreshGame("", "", `${interaction.user.username} started a game of **__Title Pending__**!`, []);
 		});
 	},
 };
