@@ -57,33 +57,16 @@ module.exports = {
 				await i.deferUpdate();
 				let actionRows = i.message.components;
 
-
-				/* Get Data. This example gets a map
-
-
-				var ref = db.ref("gridz/map");
-				var snap = await ref.once("value", function(snapshot) {
-					//console.log('contacting firebase...')
-					return snapshot;
-				});
-
-				let map = snap.val(); */
-
-
 				if(i.customId === 'newGame'){
-
 					statusMessage = `**This command isn't quite ready. Perhaps try again later?**`;
 
 				}else if(i.customId === 'resumeGame'){
-
 					statusMessage = `**This command isn't quite ready. Perhaps try again later?**`;
 
 				}else if(i.customId === 'exit'){
-
 					statusMessage = `**This command isn't quite ready. Perhaps try again later?**`;
 
 				}else if(i.customId === 'help'){
-
 					statusMessage = `**Thanks for playing!**`;
 
 				}
@@ -120,3 +103,14 @@ async function refreshGame(header, status, content, components, edit = true) {
 	}
 }
 
+
+/* Get Data. This example gets a map
+
+
+				var ref = db.ref("gridz/map");
+				var snap = await ref.once("value", function(snapshot) {
+					//console.log('contacting firebase...')
+					return snapshot;
+				});
+
+				let map = snap.val(); */
