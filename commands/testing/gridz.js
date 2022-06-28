@@ -17,92 +17,36 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('gridz')
 		.setDescription('Control a little tank'),
-	async execute(interaction) {
-		const topRow = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('heal')
-					.setLabel('⛑️')
-					.setStyle('SUCCESS')
-					//.setEmoji('')
-					.setDisabled(false),
-				new MessageButton()
-					.setCustomId('move_up')
-					.setLabel('🔼')
-					.setStyle('PRIMARY')
-					//.setEmoji('')
-					.setDisabled(false),
-				new MessageButton()
-					.setCustomId('gift')
-					.setLabel('🎁')
-					.setStyle('SUCCESS')
-					//.setEmoji('')
-					.setDisabled(false),
-				new MessageButton()
-					.setCustomId('top_sidebar')
-					.setLabel('🟢')
-					.setStyle('SECONDARY')
-					//.setEmoji('')
-					.setDisabled(true),
-		);
-		const middleRow = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('move_left')
-					.setLabel('◀️')
-					.setStyle('PRIMARY')
-					//.setEmoji('')
-					.setDisabled(false),
-				new MessageButton()
-					.setCustomId('shoot')
-					.setLabel('🔫')
-					.setStyle('DANGER')
-					//.setEmoji('')
-					.setDisabled(false),
-				new MessageButton()
-					.setCustomId('move_right')
-					.setLabel('▶️')
-					.setStyle('PRIMARY')
-					//.setEmoji('')
-					.setDisabled(false),
-				new MessageButton()
-					.setCustomId('middle_sidebar')
-					.setLabel('🟡')
-					.setStyle('SECONDARY')
-					//.setEmoji('')
-					.setDisabled(true),
-		);
-		const bottomRow = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('stop')
-					.setLabel('🚫')
-					.setStyle('SUCCESS')
-					//.setEmoji('')
-					.setDisabled(false),
-				new MessageButton()
-					.setCustomId('move_down')
-					.setLabel('🔽')
-					.setStyle('PRIMARY')
-					//.setEmoji('')
-					.setDisabled(false),
-				new MessageButton()
-					.setCustomId('upgrade')
-					.setLabel('🔭')
-					.setStyle('SUCCESS')
-					//.setEmoji('')
-					.setDisabled(false),
-				new MessageButton()
-					.setCustomId('bottom_sidebar')
-					.setLabel('🔴')
-					.setStyle('SECONDARY')
-					//.setEmoji('')
-					.setDisabled(true),
-		);
+	async execute(commandInteraction) {
+		const components = [
+			new MessageActionRow().addComponents([
+				new MessageButton().setCustomId('heal').setLabel('⛑️').setStyle('SUCCESS').setDisabled(false),
+				new MessageButton().setCustomId('move_up').setLabel('🔼').setStyle('PRIMARY').setDisabled(false),
+				new MessageButton().setCustomId('gift').setLabel('🎁').setStyle('SUCCESS').setDisabled(false),
+				new MessageButton().setCustomId('top_sidebar').setLabel('🟢').setStyle('SECONDARY').setDisabled(true),
+			]),
+			new MessageActionRow().addComponents([
+				new MessageButton().setCustomId('move_left').setLabel('◀️').setStyle('PRIMARY').setDisabled(false),
+				new MessageButton().setCustomId('shoot').setLabel('🔫').setStyle('DANGER').setDisabled(false),
+				new MessageButton().setCustomId('move_right').setLabel('▶️').setStyle('PRIMARY').setDisabled(false),
+				new MessageButton().setCustomId('middle_sidebar').setLabel('🟡').setStyle('SECONDARY').setDisabled(true),
+			]),
+			new MessageActionRow().addComponents([
+				new MessageButton().setCustomId('stop').setLabel('🚫').setStyle('SUCCESS').setDisabled(false),
+				new MessageButton().setCustomId('move_down').setLabel('🔽').setStyle('PRIMARY').setDisabled(false),
+				new MessageButton().setCustomId('upgrade').setLabel('🔭').setStyle('SUCCESS').setDisabled(false),
+				new MessageButton().setCustomId('bottom_sidebar').setLabel('🔴').setStyle('SECONDARY').setDisabled(true),
+			])
+		];
 
+		await commandInteraction.deferReply();
+
+		await commandInteraction.editReply({
+			content: `Work in progress!`,
+			components: components,
+		});
 
 		var database = admin.database();
-
 
 
 	}

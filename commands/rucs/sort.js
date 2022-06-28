@@ -18,12 +18,12 @@ module.exports = {
 				let switched = false;
 				do{
 					switched = false;
-					for(let i = 1; i < listArray.length; i++){
-						if(listArray[i] < listArray[i-1]){
+					for(let i = listArray.length; i > 0; i--){
+						if(parseInt(listArray[i]) < parseInt(listArray[i-1])){
 							switched = true;
-							let temp = listArray[i];
-							listArray[i] = listArray[i-1];
-							listArray[i-1] = temp;
+							let temp = parseInt(listArray[i]);
+							listArray[i] = parseInt(listArray[i-1]);
+							listArray[i-1] = parseInt(temp);
 						}
 					}
 				}while(switched)
