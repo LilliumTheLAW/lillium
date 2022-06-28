@@ -87,20 +87,27 @@ module.exports = {
 			console.log(`Collected ${collected.size} interactions.`);
 			await refreshGame("", "", `${interaction.user.username} started a game of **__Title Pending__**!`, []);
 		});
-	},
+
+
+    async function refreshGame(header, status, content, components, edit = true) {
+
+      let messageContent = { content: `${header}\n${status}\n>>> ${content}`, components: components };
+
+      if(edit){
+        await interaction.editReply(messageContent);
+      }else{
+        await interaction.reply(messageContent);
+      }
+    }
+
+  },
+
+
+
 };
 
 
-async function refreshGame(header, status, content, components, edit = true) {
 
-	let messageContent = { content: `${header}\n${status}\n>>> ${content}`, components: components };
-
-	if(edit){
-		await interaction.editReply(messageContent);
-	}else{
-		await interaction.reply(messageContent);
-	}
-}
 
 
 /* Get Data. This example gets a map
